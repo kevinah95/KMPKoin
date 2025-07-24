@@ -24,8 +24,9 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
-            isStatic = true
+            isStatic = false
             freeCompilerArgs += "-Xbinary=bundleId=io.github.kevinah95.ComposeApp"
+            linkerOpts.add("-lsqlite3")
         }
     }
     

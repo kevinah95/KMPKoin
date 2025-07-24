@@ -58,5 +58,6 @@ sqldelight {
             packageName.set("io.github.kevinah95")
         }
     }
+    linkSqlite = true
 }
 
