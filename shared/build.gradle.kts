@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.sqlDelight)
 }
 
 kotlin {
@@ -21,6 +22,9 @@ kotlin {
     jvm()
     
     sourceSets {
+        androidMain.dependencies {
+            implementation(libs.sqldelight.driver.android)
+        }
         commonMain.dependencies {
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)
@@ -28,6 +32,10 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+
+        nativeMain.dependencies {
+            implementation(libs.sqldelight.driver.native)
         }
     }
 }
@@ -43,3 +51,12 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
 }
+
+sqldelight {
+    databases {
+        create("Database") {
+            packageName.set("io.github.kevinah95")
+        }
+    }
+}
+

@@ -5,11 +5,14 @@ import io.github.kevinah95.data.UserRepository
 
 class UserViewModel(
     private val repository: UserRepository,
-    val platform: Platform
+    val platform: Platform,
+    private val sdk: PlayerSDK
 ) : ViewModel() {
 
-    fun sayHello(name: String): String {
+    suspend fun sayHello(name: String): String {
         val foundUser = repository.findUser(name)
-        return foundUser?.let { "Hello '$it' from ${platform.name}" } ?: "User '$name' not found!"
+        val players = sdk.getPlayers()
+
+        return foundUser?.let { "Hello '$it' from ${platform.name} ${players.first()}" } ?: "User '$name' not found!"
     }
 }

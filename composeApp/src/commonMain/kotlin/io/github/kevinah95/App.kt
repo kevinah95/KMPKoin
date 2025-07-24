@@ -10,6 +10,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.painterResource
@@ -27,6 +29,7 @@ fun App() {
     MaterialTheme {
         val userViewModel = koinViewModel<UserViewModel>()
         var showContent by remember { mutableStateOf(false) }
+        var greetingText by remember { mutableStateOf("Loading...") }
         Column(
             modifier = Modifier
                 .safeContentPadding()
@@ -37,10 +40,14 @@ fun App() {
                 Text("Click me!")
             }
             AnimatedVisibility(showContent) {
-                val greeting = userViewModel.sayHello("Koin")
+                LaunchedEffect(key1 = showContent, key2 = userViewModel) {
+                    if (showContent) { // Ensure we only call when content is actually visible
+                        greetingText = userViewModel.sayHello("Koin")
+                    }
+                }
                 Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                     Image(painterResource(Res.drawable.compose_multiplatform), null)
-                    Text("Compose: $greeting")
+                    Text("Compose: $greetingText")
                 }
             }
         }
