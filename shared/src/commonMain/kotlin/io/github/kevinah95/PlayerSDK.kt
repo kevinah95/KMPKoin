@@ -7,7 +7,7 @@ import io.github.kevinah95.db.DriverFactory
 class PlayerSDK(databaseDriverFactory: DriverFactory) {
     private val database = Database(databaseDriverFactory)
 
-    suspend fun getPlayers(): List<HockeyPlayer> {
+    fun getPlayers(): List<HockeyPlayer> {
         return database.getAllPlayers()
     }
 }
